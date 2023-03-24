@@ -10,17 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+
 import java.util.List;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
     private EmailService mailService;
 
-   @GetMapping("/user")
+   @GetMapping("/all-user")
     public List<User> getAllUser(){
        return  userService.getAllUser();
    }
@@ -34,7 +35,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid OTP");
         }
     }
-  @DeleteMapping("/user/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteCustomerById(@PathVariable Integer id) {
       userService.deleteUserById(id);
       return ResponseEntity.noContent().build();
