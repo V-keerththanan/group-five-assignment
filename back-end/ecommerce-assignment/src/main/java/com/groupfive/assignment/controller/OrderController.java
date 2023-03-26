@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -26,5 +28,17 @@ public class OrderController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/get-all")
+    public ResponseEntity<List<Order>> getAllOrders() {
+        List<Order> orders = orderService.getAllOrder();
+        return ResponseEntity.ok(orders);
+    }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
+
+        orderService.updateOrderType(id,order.getStatus());
+        return ResponseEntity.ok(order);
+    }
 }

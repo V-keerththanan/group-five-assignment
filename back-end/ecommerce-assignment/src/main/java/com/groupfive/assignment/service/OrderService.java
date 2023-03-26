@@ -3,11 +3,13 @@ package com.groupfive.assignment.service;
 import com.groupfive.assignment._enum.OrderStatus;
 import com.groupfive.assignment.model.Order;
 import com.groupfive.assignment.repository.OrderRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -36,6 +38,19 @@ public class OrderService {
 
     public void deleteOrderById(Long id){
         orderRepo.deleteById(id);
+    }
+
+    public Order updateOrderType(Long orderId, OrderStatus newType) {
+        Optional<Order> orderOptional = orderRepo.findById(orderId);
+        if (!orderOptional.isPresent()) {
+            throw new EntityNotFoundException("Order not found with ID: " + orderId);
+        }
+        Order order = orderOptional.get();
+        if (order.getStatus() == newType) {
+            return order;
+        }
+        order.setStatus(newType);
+        return orderRepo.save(order);
     }
 
 
