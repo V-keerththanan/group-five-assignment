@@ -62,6 +62,7 @@ public class AuthenticationService {
             request.getPassword()
         )
     );
+    // check whether user verified or not....
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
     var jwtToken = jwtService.generateToken(user);

@@ -4,14 +4,15 @@ package com.groupfive.assignment.controller;
 import com.groupfive.assignment.dto.Request.AuthenticationRequest;
 import com.groupfive.assignment.dto.Request.RegisterRequest;
 import com.groupfive.assignment.dto.Response.AuthenticationResponse;
+import com.groupfive.assignment.model.User;
 import com.groupfive.assignment.service.AuthenticationService;
+import com.groupfive.assignment.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,6 +21,7 @@ public class AuthenticationController {
 
 @Autowired
   private final AuthenticationService service;
+
 
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(

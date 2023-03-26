@@ -21,13 +21,13 @@ public class UserController {
     @Autowired
     private EmailService mailService;
 
-   @GetMapping("/all-user")
+   @GetMapping("/all")
     public List<User> getAllUser(){
        return  userService.getAllUser();
    }
 
 
-    @PostMapping("/verify-otp")
+    @PostMapping("/verify")
     public ResponseEntity<String> verifyOtp(@RequestParam String email, @RequestParam String otp) {
         if (mailService.verifyOtp(email, otp)) {
             return ResponseEntity.ok("OTP verified successfully");
