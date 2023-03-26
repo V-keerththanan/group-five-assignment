@@ -74,10 +74,6 @@ public class Order {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public LocalDateTime getOrderDate() {
         return orderDate;
     }
@@ -104,7 +100,7 @@ public class Order {
 
 
 
-    public void changePrice(Product product) {
+    public void setPrice(Product product) {
         this.product = product;
         BigDecimal productPrice = new BigDecimal(product.getPrice().toString());
         this.price = productPrice.multiply(new BigDecimal(this.quantity));

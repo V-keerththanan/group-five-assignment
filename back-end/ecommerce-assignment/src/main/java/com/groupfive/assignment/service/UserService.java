@@ -6,17 +6,13 @@ import com.groupfive.assignment.email.EmailService;
 import com.groupfive.assignment.model.User;
 import com.groupfive.assignment.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class UserService {
@@ -57,13 +53,7 @@ public class UserService {
 
 
 
-//    public boolean authenticate(@RequestBody com.group02.mobileshopsystem.api.Payload.Request.AuthenticationRequest loginRequest) {
-//        User user = userRepo.findByEmail(loginRequest.getEmail());
-//        if (user != null && passwordEncoder.matches(loginRequest.getPassword(),user.getPassword())) {
-//            return true;
-//        }
-//        return false;
-//    }
+
     public void deleteUserById(Integer id) {
         userRepo.deleteById(id);
     }
