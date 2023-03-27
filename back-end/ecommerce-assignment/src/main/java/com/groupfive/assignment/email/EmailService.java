@@ -1,7 +1,10 @@
 package com.groupfive.assignment.email;
 
+import com.groupfive.assignment.model.Order;
 import com.groupfive.assignment.model.User;
+import com.groupfive.assignment.repository.OrderRepository;
 import com.groupfive.assignment.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,7 +19,7 @@ public class EmailService {
 
     @Autowired
     private UserRepository userRepo;
-
+    private OrderRepository orderRepo;
     @Autowired
     private JavaMailSender javaMailSender;
 
@@ -48,6 +51,20 @@ public class EmailService {
         }
 
         return false;
+    }
+
+    public void sendConfirmationEmail(Long order_id,String email){
+        Optional<Order> existingOrder=orderRepo.findById(order_id);
+        if(!existingOrder.isPresent()){
+            throw new EntityNotFoundException("Order not found with ID: " + order_id);
+        }
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(email);
+        msg.setSubject("place order");
+        msg.setText("Your order is successfully placed .......");
+
+        javaMailSender.send(msg);
+
     }
 
 }

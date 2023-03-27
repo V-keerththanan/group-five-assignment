@@ -1,6 +1,7 @@
 package com.groupfive.assignment.service;
 
 import com.groupfive.assignment._enum.OrderStatus;
+import com.groupfive.assignment.email.EmailService;
 import com.groupfive.assignment.model.Order;
 import com.groupfive.assignment.model.OrderItem;
 import com.groupfive.assignment.repository.OrderItemRepository;
@@ -22,7 +23,9 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    public Order saveOrder(Order order) {
+    private EmailService emailService;
+
+    public Order placeOrder(Order order) {
 
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(OrderStatus.PROCESSING);
@@ -33,6 +36,7 @@ public class OrderService {
             orderItemRepository.save(orderItem);
         }
 
+        emailService.sendConfirmationEmail(order.getId(), order.getUser().getEmail());
         return savedOrder;
     }
     public List<Order> getOrders(){
