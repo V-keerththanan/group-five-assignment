@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -18,15 +20,9 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
 
     @Column(nullable = false)
-    private Integer quantity;
-
-    @Column(nullable = false)
-    private BigDecimal price;
+    private BigDecimal amount;
 
     @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
@@ -37,6 +33,11 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+
 
     public Long getId() {
         return id;
@@ -52,26 +53,6 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
     }
 
     public LocalDateTime getOrderDate() {
@@ -98,12 +79,16 @@ public class Order {
         this.status = status;
     }
 
+    public double getAmount(){
+        return this.amount.doubleValue();
+    }
 
-
-    public void setPrice(Product product) {
-        this.product = product;
-        BigDecimal productPrice = new BigDecimal(product.getPrice().toString());
-        this.price = productPrice.multiply(new BigDecimal(this.quantity));
+    public void calculateTotalAmount(Product product) {
+        double totalAmount = 0.0;
+        for (OrderItem item : this.orderItems) {
+            totalAmount+=  item.getPrice();
+        }
+        this.amount =new BigDecimal(totalAmount );
     }
 
 
