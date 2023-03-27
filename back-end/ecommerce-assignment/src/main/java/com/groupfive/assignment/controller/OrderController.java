@@ -30,7 +30,7 @@ public class OrderController {
 
     @GetMapping("/get-all")
     public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.getAllOrder();
+        List<Order> orders = orderService.getOrders();
         return ResponseEntity.ok(orders);
     }
 

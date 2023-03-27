@@ -55,6 +55,14 @@ public class Order {
         this.user = user;
     }
 
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
     public LocalDateTime getOrderDate() {
         return orderDate;
     }
