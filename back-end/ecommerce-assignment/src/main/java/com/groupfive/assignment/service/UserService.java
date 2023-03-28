@@ -33,22 +33,6 @@ public class UserService {
         user.setPassword(encryptedPassword);
         return userRepo.save(user);
     }
-    public User register(User user) {
-        String encryptedPassword=passwordEncoder.encode(user.getPassword());
-        // Generate OTP
-        String otp = mailService.generateOtp();
-        user.setOtp(otp);
-        user.setStatus(false);
-        user.setPassword(encryptedPassword);
-
-        // Save user
-        User savedUser = userRepo.save(user);
-
-        // Send OTP email
-        mailService.sendOtpEmail(user.getEmail(), otp);
-
-        return savedUser;
-    }
 
 
 
