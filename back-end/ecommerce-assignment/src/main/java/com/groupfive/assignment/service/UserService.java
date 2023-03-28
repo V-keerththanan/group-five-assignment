@@ -1,8 +1,7 @@
 package com.groupfive.assignment.service;
 
 
-import com.groupfive.assignment.dto.Request.*;
-import com.groupfive.assignment.email.EmailService;
+import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.model.User;
 import com.groupfive.assignment.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ public class UserService {
     private UserRepository userRepo;
 
     @Autowired
-    private EmailService mailService;
+    private EmailVerification mailService;
 //    LoginRequest loginRequest;
     BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 

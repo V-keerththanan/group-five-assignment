@@ -5,7 +5,7 @@ package com.groupfive.assignment.service;
 import com.groupfive.assignment.dto.Request.AuthenticationRequest;
 import com.groupfive.assignment.dto.Request.RegisterRequest;
 import com.groupfive.assignment.dto.Response.AuthenticationResponse;
-import com.groupfive.assignment.email.EmailService;
+import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.error.UserAlreadyExistsException;
 import com.groupfive.assignment.model.User;
 import com.groupfive.assignment.repository.TokenRepository;
@@ -27,7 +27,7 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  private final EmailService emailService;
+  private final EmailVerification emailVerification;
 
 
 
@@ -37,7 +37,7 @@ public class AuthenticationService {
     if(repository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistsException("User with this email already exists.");
     }
-    String otp = emailService.generateOtp();
+    String otp = emailVerification.generateOtp();
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
@@ -47,7 +47,7 @@ public class AuthenticationService {
         .password(passwordEncoder.encode(request.getPassword()))
         .build();
     var savedUser = repository.save(user);
-    emailService.sendOtpEmail(user.getEmail(), otp);
+    emailVerification.sendOtpEmail(user.getEmail(), otp);
     var jwtToken = jwtService.generateToken(user);
     saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()

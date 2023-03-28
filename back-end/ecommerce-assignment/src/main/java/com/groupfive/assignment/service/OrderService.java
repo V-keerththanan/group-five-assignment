@@ -1,7 +1,8 @@
 package com.groupfive.assignment.service;
 
 import com.groupfive.assignment._enum.OrderStatus;
-import com.groupfive.assignment.email.EmailService;
+import com.groupfive.assignment.email.EmailConfirmation;
+import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.model.Order;
 import com.groupfive.assignment.model.OrderItem;
 import com.groupfive.assignment.repository.OrderItemRepository;
@@ -23,7 +24,7 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    private EmailService emailService;
+    private EmailConfirmation emailConfirmation;
 
     public Order placeOrder(Order order) {
 
@@ -36,7 +37,7 @@ public class OrderService {
             orderItemRepository.save(orderItem);
         }
 
-        emailService.sendConfirmationEmail(order.getId(), order.getUser().getEmail());
+        emailConfirmation.sendConfirmationEmail(order.getId(), order.getUser().getEmail());
         return savedOrder;
     }
     public List<Order> getOrders(){

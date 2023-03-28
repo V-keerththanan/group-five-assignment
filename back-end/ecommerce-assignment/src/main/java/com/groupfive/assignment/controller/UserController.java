@@ -2,7 +2,7 @@ package com.groupfive.assignment.controller;
 
 
 
-import com.groupfive.assignment.email.EmailService;
+import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.model.User;
 import com.groupfive.assignment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private EmailService mailService;
+    private EmailVerification mailService;
 
    @GetMapping("/all")
     public List<User> getAllUser(){

@@ -14,12 +14,12 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
-public class EmailService {
+public class EmailVerification {
 
 
     @Autowired
     private UserRepository userRepo;
-    private OrderRepository orderRepo;
+
     @Autowired
     private JavaMailSender javaMailSender;
 
@@ -53,18 +53,6 @@ public class EmailService {
         return false;
     }
 
-    public void sendConfirmationEmail(Long order_id,String email){
-        Optional<Order> existingOrder=orderRepo.findById(order_id);
-        if(!existingOrder.isPresent()){
-            throw new EntityNotFoundException("Order not found with ID: " + order_id);
-        }
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(email);
-        msg.setSubject("place order");
-        msg.setText("Your order is successfully placed .......");
 
-        javaMailSender.send(msg);
-
-    }
 
 }
