@@ -12,6 +12,14 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<CartItem> items;
+
     public Long getId() {
         return id;
     }
@@ -36,12 +44,6 @@ public class Cart {
         this.items = items;
     }
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<CartItem> items;
 
 
 }
