@@ -91,7 +91,7 @@ public class Order {
         return this.amount.doubleValue();
     }
 
-    public void calculateTotalAmount(Product product) {
+    public void calculateTotalAmount() {
         double totalAmount = 0.0;
         for (OrderItem item : this.orderItems) {
             totalAmount+=  item.getPrice();
