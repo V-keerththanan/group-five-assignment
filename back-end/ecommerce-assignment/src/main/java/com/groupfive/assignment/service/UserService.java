@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -34,11 +35,21 @@ public class UserService {
         return userRepo.save(user);
     }
 
+    public User getUserFirstName(Integer user_id){
+
+        Optional<User> existUser=userRepo.findById(user_id);
+        return existUser.get();
+
+    }
 
 
 
-    public void deleteUserById(Integer id) {
-        userRepo.deleteById(id);
+    public boolean deleteUserById(Integer id) {
+        if (userRepo.existsById(id)) {
+            userRepo.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
 

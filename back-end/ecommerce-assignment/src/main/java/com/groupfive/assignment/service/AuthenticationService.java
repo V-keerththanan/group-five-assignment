@@ -2,6 +2,7 @@ package com.groupfive.assignment.service;
 
 
 
+import com.groupfive.assignment._enum.Role;
 import com.groupfive.assignment.dto.Request.AuthenticationRequest;
 import com.groupfive.assignment.dto.Request.RegisterRequest;
 import com.groupfive.assignment.dto.Response.AuthenticationResponse;
@@ -31,7 +32,7 @@ public class AuthenticationService {
 
 
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  public AuthenticationResponse registerUser(RegisterRequest request) {
     boolean userExists = repository.existsByEmail(request.getEmail());
 
     if(repository.existsByEmail(request.getEmail())) {
@@ -45,6 +46,7 @@ public class AuthenticationService {
             .status(false)
             .otp(otp)
         .password(passwordEncoder.encode(request.getPassword()))
+            .role(Role.USER)
         .build();
     var savedUser = repository.save(user);
     emailVerification.sendOtpEmail(user.getEmail(), otp);
@@ -55,6 +57,31 @@ public class AuthenticationService {
         .build();
   }
 
+  public AuthenticationResponse registerAdmin(RegisterRequest request) {
+    boolean userExists = repository.existsByEmail(request.getEmail());
+
+    if(repository.existsByEmail(request.getEmail())) {
+      throw new UserAlreadyExistsException("User with this email already exists.");
+    }
+    String otp = emailVerification.generateOtp();
+    var user = User.builder()
+            .firstname(request.getFirstname())
+            .lastname(request.getLastname())
+            .email(request.getEmail())
+            .status(false)
+            .otp(otp)
+            .password(passwordEncoder.encode(request.getPassword()))
+            .role(Role.ADMIN)
+            .build();
+    var savedUser = repository.save(user);
+    emailVerification.sendOtpEmail(user.getEmail(), otp);
+    var jwtToken = jwtService.generateToken(user);
+    saveUserToken(savedUser, jwtToken);
+    return AuthenticationResponse.builder()
+            .token(jwtToken)
+            .build();
+  }
+
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
@@ -62,7 +89,7 @@ public class AuthenticationService {
             request.getPassword()
         )
     );
-    // check whether user verified or not....
+// check whether verify or not
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
     var jwtToken = jwtService.generateToken(user);

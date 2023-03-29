@@ -1,6 +1,8 @@
 package com.groupfive.assignment.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.groupfive.assignment._enum.Role;
 import com.groupfive.assignment.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,8 +10,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
-        public class User implements UserDetails {
+public class User implements UserDetails, Serializable   {
 
   @Id
   @GeneratedValue
@@ -30,6 +34,13 @@ import java.util.List;
   private String password;
 
   private String otp;
+  private Boolean status;
+  @JsonIgnore
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Token> tokens;
+
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
   public String getOtp() {
     return otp;
@@ -47,14 +58,10 @@ import java.util.List;
     this.status = status;
   }
 
-  private Boolean status;
-
-  @OneToMany(mappedBy = "user")
-  private List<Token> tokens;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    return List.of(new SimpleGrantedAuthority(role.name()));
   }
 
   @Override

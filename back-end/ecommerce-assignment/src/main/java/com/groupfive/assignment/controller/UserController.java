@@ -2,6 +2,8 @@ package com.groupfive.assignment.controller;
 
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.model.User;
 import com.groupfive.assignment.service.UserService;
@@ -22,8 +24,8 @@ public class UserController {
     private EmailVerification mailService;
 
    @GetMapping("/all")
-    public List<User> getAllUser(){
-       return  userService.getAllUser();
+    public ResponseEntity<List<User> > getAllUser(){
+       return  ResponseEntity.ok(userService.getAllUser());
    }
 
 
@@ -36,10 +38,14 @@ public class UserController {
         }
     }
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteCustomerById(@PathVariable Integer id) {
-      userService.deleteUserById(id);
+  public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+      boolean deleted = userService.deleteUserById(id);
+      if (!deleted) {
+          return ResponseEntity.notFound().build();
+      }
       return ResponseEntity.noContent().build();
   }
+
 
 
 }
