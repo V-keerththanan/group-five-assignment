@@ -34,26 +34,13 @@ public class OrderService {
 
     private CartRepository cartRepository;
 
-    public Order placeOrder(Order order) {
-
-        order.setOrderDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.PROCESSING);
-        Order savedOrder = orderRepository.save(order);
-
-        for (OrderItem orderItem : order.getOrderItems()) {
-            orderItem.setOrder(savedOrder);
-            orderItemRepository.save(orderItem);
-        }
-
-        emailConfirmation.sendConfirmationEmail(order.getId(), order.getUser().getEmail());
-        return savedOrder;
-    }
-
     @Transactional
-    public Order placeOrder(Long cartId, List<CartItem> cartItems) {
+    public Order placeOrder(Long cartId) {
 
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found"));
+
+        List<CartItem> cartItems=cart.getItems();
 
 
         Order order = new Order();
