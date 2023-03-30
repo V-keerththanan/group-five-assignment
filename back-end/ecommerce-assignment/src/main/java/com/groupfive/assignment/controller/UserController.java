@@ -20,8 +20,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private EmailVerification mailService;
+
 
    @GetMapping("/all")
     public ResponseEntity<List<User> > getAllUser(){
@@ -29,14 +28,7 @@ public class UserController {
    }
 
 
-    @PostMapping("/verify")
-    public ResponseEntity<String> verifyOtp(@RequestParam String email, @RequestParam String otp) {
-        if (mailService.verifyOtp(email, otp)) {
-            return ResponseEntity.ok("OTP verified successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid OTP");
-        }
-    }
+
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
       boolean deleted = userService.deleteUserById(id);

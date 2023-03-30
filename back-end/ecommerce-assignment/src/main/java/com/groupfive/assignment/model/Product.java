@@ -1,5 +1,6 @@
 package com.groupfive.assignment.model;
 
+import com.groupfive.assignment._enum.ProductCategory;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +17,15 @@ public class Product {
     private Double price;
     @Column(nullable = false)
     private String description;
+    @Enumerated(EnumType.STRING)
+    private ProductCategory category;
+
+    @Column(nullable = false)
+    private Boolean available;
+    public void setCategory(ProductCategory category) {
+        this.category = category;
+    }
+
 
     public String getDescription() {
         return description;
@@ -33,21 +43,11 @@ public class Product {
         this.available = available;
     }
 
-    @Column(nullable = false)
-    private Boolean available;
 
 
 
-    public String getCategory() {
-        return category;
-    }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
-    @Column(nullable = false)
-    private String category;
     public Long getId() {
         return id;
     }

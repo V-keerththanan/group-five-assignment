@@ -33,7 +33,7 @@ public class AuthenticationService {
 
 
 
-  public AuthenticationResponse registerUser(RegisterRequest request) {
+  public String registerUser(RegisterRequest request) {
     boolean userExists = repository.existsByEmail(request.getEmail());
 
     if(repository.existsByEmail(request.getEmail())) {
@@ -51,11 +51,9 @@ public class AuthenticationService {
         .build();
     var savedUser = repository.save(user);
     emailVerification.sendOtpEmail(user.getEmail(), otp);
-    var jwtToken = jwtService.generateToken(user);
-    saveUserToken(savedUser, jwtToken);
-    return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+
+
+    return "verify account...";
   }
 
   public AuthenticationResponse registerAdmin(RegisterRequest request) {

@@ -46,7 +46,9 @@ public class EmailVerification {
 
         if (saveduUser.get().getOtp().equals(otp)) {
             saveduUser.get().setStatus(true);
+            saveduUser.get().setOtp(null);
             userRepo.save(saveduUser.get());
+
             return true;
         }
 
