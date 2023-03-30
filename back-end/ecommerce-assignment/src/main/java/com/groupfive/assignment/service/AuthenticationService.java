@@ -8,6 +8,7 @@ import com.groupfive.assignment.dto.Request.RegisterRequest;
 import com.groupfive.assignment.dto.Response.AuthenticationResponse;
 import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.error.UserAlreadyExistsException;
+import com.groupfive.assignment.error.UserNotVerifyException;
 import com.groupfive.assignment.model.User;
 import com.groupfive.assignment.repository.TokenRepository;
 import com.groupfive.assignment.repository.UserRepository;
@@ -89,9 +90,13 @@ public class AuthenticationService {
             request.getPassword()
         )
     );
-// check whether verify or not
+
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
+
+    if(user.getStatus()==false){
+      throw new UserNotVerifyException("user not verify");
+    }
     var jwtToken = jwtService.generateToken(user);
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
