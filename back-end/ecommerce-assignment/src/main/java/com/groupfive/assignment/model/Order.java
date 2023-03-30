@@ -1,6 +1,7 @@
 package com.groupfive.assignment.model;
 
 import com.groupfive.assignment._enum.OrderStatus;
+import com.groupfive.assignment._enum.PaymentMethod;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -30,9 +31,18 @@ public class Order {
     @Column(name = "delivery_date")
     private LocalDateTime deliveryDate;
 
+    private String homeNo;
+    private String homeStreet;
+    private String homeCity;
+    private String homeDistrict;
+    private String homePhoneNo;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymethod=PaymentMethod.CASH_ON_DELIVERY;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
@@ -99,7 +109,51 @@ public class Order {
         this.amount =new BigDecimal(totalAmount );
     }
 
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
+    public String getHomeNo() {
+        return homeNo;
+    }
 
+    public void setHomeNo(String homeNo) {
+        this.homeNo = homeNo;
+    }
 
+    public String getHomeStreet() {
+        return homeStreet;
+    }
+
+    public void setHomeStreet(String homeStreet) {
+        this.homeStreet = homeStreet;
+    }
+
+    public String getHomeCity() {
+        return homeCity;
+    }
+
+    public void setHomeCity(String homeCity) {
+        this.homeCity = homeCity;
+    }
+
+    public String getHomeDistrict() {
+        return homeDistrict;
+    }
+
+    public void setHomeDistrict(String homeDistrict) {
+        this.homeDistrict = homeDistrict;
+    }
+
+    public String getHomePhoneNo() {
+        return homePhoneNo;
+    }
+
+    public void setHomePhoneNo(String homePhoneNo) {
+        this.homePhoneNo = homePhoneNo;
+    }
+
+    public PaymentMethod getPaymethod() {
+        return paymethod;
+    }
 }

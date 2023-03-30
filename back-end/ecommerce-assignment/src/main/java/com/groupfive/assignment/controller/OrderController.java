@@ -16,11 +16,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("/save")
-    public ResponseEntity<Order> saveOrder(@PathVariable Long cart_id) {
-        Order savedOrder = orderService.placeOrder(cart_id);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id) {

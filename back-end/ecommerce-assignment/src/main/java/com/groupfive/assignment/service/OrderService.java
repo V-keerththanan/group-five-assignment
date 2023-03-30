@@ -4,10 +4,7 @@ import com.groupfive.assignment._enum.OrderStatus;
 import com.groupfive.assignment.email.EmailConfirmation;
 import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.error.CartNotFoundException;
-import com.groupfive.assignment.model.Cart;
-import com.groupfive.assignment.model.CartItem;
-import com.groupfive.assignment.model.Order;
-import com.groupfive.assignment.model.OrderItem;
+import com.groupfive.assignment.model.*;
 import com.groupfive.assignment.repository.CartRepository;
 import com.groupfive.assignment.repository.OrderItemRepository;
 import com.groupfive.assignment.repository.OrderRepository;
@@ -35,10 +32,9 @@ public class OrderService {
     private CartRepository cartRepository;
 
     @Transactional
-    public Order placeOrder(Long cartId) {
+    public Order placeOrder(User user, Cart cart,String homeNo,String homeStreet,String homeCity,String homeDistrict) {
 
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new CartNotFoundException("Cart not found"));
+
 
         List<CartItem> cartItems=cart.getItems();
 
@@ -47,6 +43,10 @@ public class OrderService {
         order.setUser(cart.getUser());
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(OrderStatus.PROCESSING);
+        order.setHomeNo(homeNo);
+        order.setHomeStreet(homeStreet);
+        order.setHomeCity(homeCity);
+        order.setHomeDistrict(homeDistrict);
         orderRepository.save(order);
 
 
