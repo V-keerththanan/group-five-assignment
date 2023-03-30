@@ -18,12 +18,12 @@ public class Product {
     @Column(nullable = false)
     private String description;
     @Enumerated(EnumType.STRING)
-    private ProductCategory category;
+    private ProductCategory product_category;
 
     @Column(nullable = false)
     private Boolean available;
     public void setCategory(ProductCategory category) {
-        this.category = category;
+        this.product_category = category;
     }
 
 

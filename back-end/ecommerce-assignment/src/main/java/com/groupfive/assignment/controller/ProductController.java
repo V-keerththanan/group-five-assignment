@@ -1,5 +1,6 @@
 package com.groupfive.assignment.controller;
 
+import com.groupfive.assignment._enum.ProductCategory;
 import com.groupfive.assignment.model.Product;
 import com.groupfive.assignment.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,15 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/search-name")
+    public ResponseEntity<List<Product>> searchProductName(@RequestParam String name) {
+        List<Product> productList = productService.searchProductsByName(name);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
     @GetMapping("/search")
-    public ResponseEntity<List<Product>> searchProducts(@RequestParam String name) {
-        List<Product> productList = productService.searchProducts(name);
+    public ResponseEntity<List<Product>> searchProductCategory(@RequestParam ProductCategory category) {
+        List<Product> productList = productService.searchProductsByCategory(category);
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 }

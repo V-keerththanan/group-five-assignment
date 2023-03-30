@@ -1,5 +1,6 @@
 package com.groupfive.assignment.service;
 
+import com.groupfive.assignment._enum.ProductCategory;
 import com.groupfive.assignment.model.Product;
 import com.groupfive.assignment.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,16 @@ public class ProductService {
         return false;
     }
 
-    public List<Product> searchProducts(String query) {
+    public List<Product> searchProductsByName(String query) {
         return productRepo.findByNameContainingIgnoreCase(query);
     }
+
+    public List<Product> searchProductsByCategory(ProductCategory category) {
+        return productRepo.findByCategory(category);
+    }
+
+
+
+
 
 }
