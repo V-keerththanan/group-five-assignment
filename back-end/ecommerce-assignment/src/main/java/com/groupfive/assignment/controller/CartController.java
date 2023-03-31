@@ -18,6 +18,7 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+    @Autowired
     private CartItemRepository cartItemRepository;
 
     @PostMapping("/create")
@@ -35,8 +36,8 @@ public class CartController {
         return ResponseEntity.ok(cart);
     }
 
-    @GetMapping("/{cartId}/items")
-    public ResponseEntity<?> getCartItems(@PathVariable Long cartId) {
+    @GetMapping("/items")
+    public ResponseEntity<?> getCartItems(@RequestParam  Long cartId) {
         Cart cart = cartService.getCartById(cartId);
         if (cart == null) {
             return ResponseEntity.notFound().build();
@@ -45,16 +46,16 @@ public class CartController {
         return ResponseEntity.ok(cartItems);
     }
 
-    @PostMapping("/{cartId}/add-item")
-    public ResponseEntity<String> addCartItem(@PathVariable(required = false) Long cartId, @RequestParam int user_id, @RequestBody Product product, @RequestParam int quantity) {
-        cartService.addCartItem(cartId, user_id, product, quantity);
+    @PostMapping("/add-item")
+    public ResponseEntity<String> addCartItem(@RequestParam Long cartId, @RequestBody Product product, @RequestParam int quantity) {
+        cartService.addCartItem(cartId, product, quantity);
         return ResponseEntity.ok("Item added to cart");
     }
 
-    @DeleteMapping("/{cartId}/items/{itemId}")
+    @DeleteMapping("/items/delete")
     public ResponseEntity<?> removeCartItem(
-            @PathVariable Long cartId,
-            @PathVariable Long itemId) {
+            @RequestParam Long cartId,
+            @RequestParam Long itemId) {
         Cart cart = cartService.getCartById(cartId);
         if (cart == null) {
             return ResponseEntity.notFound().build();
@@ -67,9 +68,10 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{cartId}")
-    public ResponseEntity<?> clearCart(@PathVariable Long cartId) {
+    @DeleteMapping("/clear")
+    public ResponseEntity<?> clearCart(@RequestParam("cartId") Long cartId) {
         Cart cart = cartService.getCartById(cartId);
+        cartService.clearCart(cart);
         return ResponseEntity.ok().build();
     }
 

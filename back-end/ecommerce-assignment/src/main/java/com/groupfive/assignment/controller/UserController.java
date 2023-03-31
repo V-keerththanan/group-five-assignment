@@ -16,20 +16,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
 
 
-   @GetMapping("/all")
+   @GetMapping("user/all")
     public ResponseEntity<List<User> > getAllUser(){
        return  ResponseEntity.ok(userService.getAllUser());
    }
 
 
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping("/user/{id}")
   public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
       boolean deleted = userService.deleteUserById(id);
       if (!deleted) {

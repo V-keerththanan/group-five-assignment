@@ -20,9 +20,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepo;
 
-    @Autowired
-    private EmailVerification mailService;
-//    LoginRequest loginRequest;
+
     BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
     public List<User> getAllUser(){

@@ -15,6 +15,7 @@ import com.groupfive.assignment.repository.UserRepository;
 import com.groupfive.assignment.token.Token;
 import com.groupfive.assignment.token.TokenType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,13 +24,22 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+  @Autowired
   private final UserRepository repository;
+  @Autowired
   private final TokenRepository tokenRepository;
+  @Autowired
   private final PasswordEncoder passwordEncoder;
+  @Autowired
   private final JwtService jwtService;
+  @Autowired
   private final AuthenticationManager authenticationManager;
+  @Autowired
 
   private final EmailVerification emailVerification;
+  @Autowired
+
+  private final CartService cartService;
 
 
 
@@ -56,7 +66,7 @@ public class AuthenticationService {
     return "verify account...";
   }
 
-  public AuthenticationResponse registerAdmin(RegisterRequest request) {
+  public String registerAdmin(RegisterRequest request) {
     boolean userExists = repository.existsByEmail(request.getEmail());
 
     if(repository.existsByEmail(request.getEmail())) {
@@ -74,11 +84,7 @@ public class AuthenticationService {
             .build();
     var savedUser = repository.save(user);
     emailVerification.sendOtpEmail(user.getEmail(), otp);
-    var jwtToken = jwtService.generateToken(user);
-    saveUserToken(savedUser, jwtToken);
-    return AuthenticationResponse.builder()
-            .token(jwtToken)
-            .build();
+   return "verify account..";
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -95,6 +101,9 @@ public class AuthenticationService {
     if(user.getStatus()==false){
       throw new UserNotVerifyException("user not verify");
     }
+
+    cartService.createOrGetCart(user.getId());
+
     var jwtToken = jwtService.generateToken(user);
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
