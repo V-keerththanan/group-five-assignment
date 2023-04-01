@@ -4,10 +4,12 @@ import com.groupfive.assignment._enum.OrderStatus;
 import com.groupfive.assignment.email.EmailConfirmation;
 import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.error.CartNotFoundException;
+import com.groupfive.assignment.error.CartOrUserNotFound;
 import com.groupfive.assignment.model.*;
 import com.groupfive.assignment.repository.CartRepository;
 import com.groupfive.assignment.repository.OrderItemRepository;
 import com.groupfive.assignment.repository.OrderRepository;
+import com.groupfive.assignment.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,48 +28,60 @@ public class OrderService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
-
+    @Autowired
     private EmailConfirmation emailConfirmation;
-
+    @Autowired
     private CartRepository cartRepository;
-
+    @Autowired
+    private UserRepository userRepository;
     @Transactional
-    public Order placeOrder(User user, Cart cart,String homeNo,String homeStreet,String homeCity,String homeDistrict) {
+    public Order placeOrder(Integer userId, Long cartId,String homeNo,String homeStreet,String homeCity,String homeDistrict) {
 
 
-
-        List<CartItem> cartItems=cart.getItems();
-
-
-        Order order = new Order();
-        order.setUser(cart.getUser());
-        order.setOrderDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.PROCESSING);
-        order.setHomeNo(homeNo);
-        order.setHomeStreet(homeStreet);
-        order.setHomeCity(homeCity);
-        order.setHomeDistrict(homeDistrict);
-        orderRepository.save(order);
+        Optional<User> savedUser=userRepository.findById(userId);
+        Optional<Cart> savedCart=cartRepository.findById(cartId);
+        if(savedUser.isPresent() && savedCart.isPresent()){
+            Cart cart=savedCart.get();
+            List<CartItem> cartItems=cart.getItems();
 
 
-        List<OrderItem> orderItems = new ArrayList<>();
-        for (CartItem cartItem : cartItems) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(cartItem.getProduct());
-            orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setOrder(order);
-            orderItem.calculatepriceOfOrderItem(cartItem.getProduct());
-            orderItemRepository.save(orderItem);
-            orderItems.add(orderItem);
+            Order order = new Order();
+            order.setUser(cart.getUser());
+            order.setOrderDate(LocalDateTime.now());
+            order.setStatus(OrderStatus.PROCESSING);
+            order.setHomeNo(homeNo);
+            order.setHomeStreet(homeStreet);
+            order.setHomeCity(homeCity);
+            order.setHomeDistrict(homeDistrict);
+            orderRepository.save(order);
+
+
+            List<OrderItem> orderItems = new ArrayList<>();
+            for (CartItem cartItem : cartItems) {
+                OrderItem orderItem = new OrderItem();
+                orderItem.setProduct(cartItem.getProduct());
+                orderItem.setQuantity(cartItem.getQuantity());
+                orderItem.setOrder(order);
+                orderItem.calculatepriceOfOrderItem(cartItem.getProduct());
+                orderItemRepository.save(orderItem);
+                orderItems.add(orderItem);
+            }
+
+            order.setOrderItems(orderItems);
+            order.calculateTotalAmount();
+            orderRepository.save(order);
+            cart.getItems().removeAll(cartItems);
+            cartRepository.save(cart);
+
+            emailConfirmation.sendConfirmationEmail(order.getId(),savedUser.get().getEmail());
+            return order;
+
+        }else{
+            throw new CartOrUserNotFound("user or cart not valid....");
+
         }
 
-        order.setOrderItems(orderItems);
-        order.calculateTotalAmount();
-        orderRepository.save(order);
-        cart.getItems().removeAll(cartItems);
-        cartRepository.save(cart);
 
-        return order;
     }
     public List<Order> getOrders(){
         return orderRepository.findAll();

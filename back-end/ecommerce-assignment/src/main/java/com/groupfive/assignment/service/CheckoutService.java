@@ -12,9 +12,8 @@ public class CheckoutService {
     @Autowired
     private OrderService orderService;
     private EmailConfirmation emailConfirmation;
-    public void processCheckout(User user, Cart cart, String homeNo,String homeStreet,String homeCity,String homeDistrict) {
-            Order order=orderService.placeOrder(user,cart,homeNo,homeStreet,homeCity,homeDistrict);
+    public void processCheckout(Integer userId, Long cartId, String homeNo,String homeStreet,String homeCity,String homeDistrict) {
+            Order order=orderService.placeOrder(userId,cartId,homeNo,homeStreet,homeCity,homeDistrict);
 
-            emailConfirmation.sendConfirmationEmail(order.getId(),user.getEmail());
     }
 }

@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CheckoutRequest {
 
-        private User user;
-        private Cart cart;
+        private Integer userId;
+        private Long cartId;
 
         private String homeNo;
          private String homeStreet;

@@ -19,8 +19,8 @@ public class CheckoutController {
     public ResponseEntity<Void> processCheckout(@RequestBody CheckoutRequest checkoutRequest) {
 
 
-        checkoutService.processCheckout(checkoutRequest.getUser(),
-                checkoutRequest.getCart(), checkoutRequest.getHomeNo(),
+        checkoutService.processCheckout(checkoutRequest.getUserId(),
+                checkoutRequest.getCartId(), checkoutRequest.getHomeNo(),
                 checkoutRequest.getHomeStreet(),checkoutRequest.getHomeCity(),
                 checkoutRequest.getHomeDistrict());
 
