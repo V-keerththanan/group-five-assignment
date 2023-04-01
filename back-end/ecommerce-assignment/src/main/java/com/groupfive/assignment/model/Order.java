@@ -22,8 +22,8 @@ public class Order {
     private User user;
 
 
-    @Column(nullable = false)
-    private BigDecimal amount;
+    @Column(nullable = true)
+    private double amount;
 
     @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
@@ -98,7 +98,7 @@ public class Order {
     }
 
     public double getAmount(){
-        return this.amount.doubleValue();
+        return this.amount;
     }
 
     public void calculateTotalAmount() {
@@ -106,10 +106,10 @@ public class Order {
         for (OrderItem item : this.orderItems) {
             totalAmount+=  item.getPrice();
         }
-        this.amount =new BigDecimal(totalAmount );
+        this.amount =totalAmount ;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/checkout")
+@RestController
 public class CheckoutController {
     @Autowired
     private CheckoutService checkoutService;
-    @PostMapping("/process")
+    @PostMapping("/checkout")
     public ResponseEntity<Void> processCheckout(@RequestBody CheckoutRequest checkoutRequest) {
 
 
         checkoutService.processCheckout(checkoutRequest.getUserId(),
                 checkoutRequest.getCartId(), checkoutRequest.getHomeNo(),
                 checkoutRequest.getHomeStreet(),checkoutRequest.getHomeCity(),
-                checkoutRequest.getHomeDistrict());
+                checkoutRequest.getHomeDistrict(),checkoutRequest.getHomePhoneNo());
 
         return ResponseEntity.ok().build();
     }

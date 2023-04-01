@@ -28,6 +28,7 @@ public class OrderService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+
     @Autowired
     private EmailConfirmation emailConfirmation;
     @Autowired
@@ -35,7 +36,7 @@ public class OrderService {
     @Autowired
     private UserRepository userRepository;
     @Transactional
-    public Order placeOrder(Integer userId, Long cartId,String homeNo,String homeStreet,String homeCity,String homeDistrict) {
+    public Order placeOrder(Integer userId, Long cartId,String homeNo,String homeStreet,String homeCity,String homeDistrict,String homePhoneNo) {
 
 
         Optional<User> savedUser=userRepository.findById(userId);
@@ -43,16 +44,18 @@ public class OrderService {
         if(savedUser.isPresent() && savedCart.isPresent()){
             Cart cart=savedCart.get();
             List<CartItem> cartItems=cart.getItems();
-
-
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime futureDateTime = now.plusDays(7);
             Order order = new Order();
             order.setUser(cart.getUser());
-            order.setOrderDate(LocalDateTime.now());
+            order.setOrderDate(now);
             order.setStatus(OrderStatus.PROCESSING);
             order.setHomeNo(homeNo);
             order.setHomeStreet(homeStreet);
             order.setHomeCity(homeCity);
             order.setHomeDistrict(homeDistrict);
+            order.setDeliveryDate(futureDateTime);
+            order.setHomePhoneNo(homePhoneNo);
             orderRepository.save(order);
 
 
