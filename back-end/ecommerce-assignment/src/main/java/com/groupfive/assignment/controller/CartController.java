@@ -27,8 +27,8 @@ public class CartController {
         return ResponseEntity.ok(cart);
     }
 
-    @GetMapping("/{cartId}")
-    public ResponseEntity<?> getCartById(@PathVariable Long cartId) {
+    @GetMapping
+    public ResponseEntity<?> getCartById(@RequestParam Long cartId) {
         Cart cart = cartService.getCartById(cartId);
         if (cart == null) {
             return ResponseEntity.notFound().build();
@@ -53,7 +53,7 @@ public class CartController {
     }
 
     @DeleteMapping("/items/delete")
-    public ResponseEntity<?> removeCartItem(
+    public ResponseEntity<String> removeCartItem(
             @RequestParam Long cartId,
             @RequestParam Long itemId) {
         Cart cart = cartService.getCartById(cartId);
@@ -65,13 +65,13 @@ public class CartController {
             return ResponseEntity.notFound().build();
         }
         cartService.removeCartItem(cart, cartItem.get());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("removed from Cart");
     }
 
     @DeleteMapping("/clear")
     public ResponseEntity<?> clearCart(@RequestParam("cartId") Long cartId) {
-        Cart cart = cartService.getCartById(cartId);
-        cartService.clearCart(cart);
+
+        cartService.clearCart(cartId);
         return ResponseEntity.ok().build();
     }
 

@@ -19,7 +19,7 @@ public class Cart {
     private User user;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CartItem> items;
 
     public Long getId() {

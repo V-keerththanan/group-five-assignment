@@ -4,8 +4,10 @@ import com.groupfive.assignment.model.Cart;
 import com.groupfive.assignment.model.CartItem;
 import com.groupfive.assignment.model.Product;
 import com.groupfive.assignment.model.User;
+import com.groupfive.assignment.repository.CartItemRepository;
 import com.groupfive.assignment.repository.CartRepository;
 import com.groupfive.assignment.repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ public class CartService {
     private CartRepository cartRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EntityManager entityManager;
+
     public Cart createCart(Integer user_id) {
         Optional<User> existingUser=userRepository.findById(user_id);
         Cart cart = new Cart();
@@ -66,9 +71,18 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public void clearCart(Cart cart) {
-        cart.setItems(new ArrayList<>());
-        cartRepository.save(cart);
+    public void clearCart(Long cartId) {
+        Optional<Cart> optionalCart = cartRepository.findById(cartId);
+        if (optionalCart.isPresent()) {
+            Cart cart = optionalCart.get();
+            List<CartItem> cartItems = cart.getItems();
+            System.out.println(cartItems.isEmpty());
+            cartItems.clear();
+            System.out.println(cart.getItems().isEmpty());
+            entityManager.detach(cart);
+            cartRepository.save(cart);
+
+        }
     }
 
     public Cart createOrGetCart(int userId) {
