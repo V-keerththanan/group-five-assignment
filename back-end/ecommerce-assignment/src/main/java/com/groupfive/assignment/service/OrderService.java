@@ -5,6 +5,7 @@ import com.groupfive.assignment.email.EmailConfirmation;
 import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.error.CartNotFoundException;
 import com.groupfive.assignment.error.CartOrUserNotFound;
+import com.groupfive.assignment.error.OrderNotFoundException;
 import com.groupfive.assignment.model.*;
 import com.groupfive.assignment.repository.CartRepository;
 import com.groupfive.assignment.repository.OrderItemRepository;
@@ -114,6 +115,17 @@ public class OrderService {
         }
         order.setStatus(newType);
         return orderRepository.save(order);
+    }
+
+    public List<OrderItem> getOrderItems(Long orderId){
+        Optional<Order> savedOrder=orderRepository.findById(orderId);
+        if (savedOrder.isPresent()){
+            return savedOrder.get().getOrderItems();
+        }else{
+            throw new OrderNotFoundException("Order is not found !");
+        }
+
+
     }
 
     }

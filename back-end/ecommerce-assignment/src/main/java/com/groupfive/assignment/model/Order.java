@@ -1,5 +1,6 @@
 package com.groupfive.assignment.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.groupfive.assignment._enum.OrderStatus;
 import com.groupfive.assignment._enum.PaymentMethod;
 import jakarta.persistence.*;
@@ -45,6 +46,7 @@ public class Order {
     private PaymentMethod paymethod=PaymentMethod.CASH_ON_DELIVERY;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<OrderItem> orderItems = new ArrayList<>();
 
 

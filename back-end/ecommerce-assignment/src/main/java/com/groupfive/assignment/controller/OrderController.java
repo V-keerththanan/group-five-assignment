@@ -1,6 +1,7 @@
 package com.groupfive.assignment.controller;
 
 import com.groupfive.assignment.model.Order;
+import com.groupfive.assignment.model.OrderItem;
 import com.groupfive.assignment.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/order")
 public class OrderController {
 
     @Autowired
@@ -29,6 +30,13 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
+    @GetMapping("/get")
+    public ResponseEntity<List<Order>> getAllOrders(@RequestParam Integer id) {
+        List<Order> orders = orderService.getOrdersByUserId(id);
+        return ResponseEntity.ok(orders);
+    }
+
+
 
     @PutMapping("/update")
     public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
@@ -36,4 +44,11 @@ public class OrderController {
         orderService.updateOrderType(id,order.getStatus());
         return ResponseEntity.ok(order);
     }
+    @GetMapping("/items")
+    public ResponseEntity<List<OrderItem>> getAllOrderItems(@RequestParam Long orderId) {
+        List<OrderItem> items = orderService.getOrderItems(orderId);
+        return ResponseEntity.ok(items);
+    }
+
+
 }
