@@ -70,6 +70,7 @@ public class EmailConfirmation {
                     .append("<td>").append(item.getPrice()).append("</td>")
                     .append("</tr>");
         }
+
         return sb.toString();
     }
 

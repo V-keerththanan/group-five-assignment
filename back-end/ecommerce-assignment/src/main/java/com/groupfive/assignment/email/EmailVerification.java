@@ -32,8 +32,8 @@ public class EmailVerification {
     public void sendOtpEmail(String email, String otp) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(email);
-        msg.setSubject("OTP for registration");
-        msg.setText("Your OTP is: " + otp);
+        msg.setSubject("OTP for Verification");
+        msg.setText("Your OTP is: " + otp+"\n\nThanks for connecting us .....");
 
         javaMailSender.send(msg);
     }
