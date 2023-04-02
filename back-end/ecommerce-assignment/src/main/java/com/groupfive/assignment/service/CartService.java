@@ -1,5 +1,6 @@
 package com.groupfive.assignment.service;
 
+import com.groupfive.assignment.error.CartOrProductNotFoundException;
 import com.groupfive.assignment.model.Cart;
 import com.groupfive.assignment.model.CartItem;
 import com.groupfive.assignment.model.Product;
@@ -65,7 +66,7 @@ public class CartService {
             cartRepository.save(cart);
             return "Item added to cart";
         } else {
-            return "Invalid cart ID";
+            throw new CartOrProductNotFoundException("cart or product not found...");
         }
     }
 
