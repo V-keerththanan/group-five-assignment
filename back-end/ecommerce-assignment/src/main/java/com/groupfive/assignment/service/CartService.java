@@ -1,5 +1,6 @@
 package com.groupfive.assignment.service;
 
+import com.groupfive.assignment.error.CartOrCartItemNotFoundException;
 import com.groupfive.assignment.error.CartOrProductNotFoundException;
 import com.groupfive.assignment.model.Cart;
 import com.groupfive.assignment.model.CartItem;
@@ -28,6 +29,8 @@ public class CartService {
     private EntityManager entityManager;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
     public Cart createCart(Integer user_id) {
         Optional<User> existingUser=userRepository.findById(user_id);
@@ -71,10 +74,17 @@ public class CartService {
     }
 
 
-    public void removeCartItem(Cart cart, CartItem cartItem) {
-        List<CartItem> cartItems = cart.getItems();
-        cartItems.remove(cartItem);
-        cartRepository.save(cart);
+    public void removeCartItem(Long cartId, Long cartItemId) {
+        Optional<Cart> savedCart=cartRepository.findById(cartId);
+        Optional<CartItem> savedCartItem=cartItemRepository.findById(cartItemId);
+        if(savedCart.isPresent() && savedCartItem.isPresent()){
+            List<CartItem> cartItems = savedCart.get().getItems();
+            cartItems.remove(savedCartItem.get());
+            cartRepository.save(savedCart.get());
+
+        }else{
+            throw new CartOrCartItemNotFoundException("given cart or cart item is not present ");
+        }
     }
 
     public void clearCart(Long cartId) {
@@ -82,9 +92,7 @@ public class CartService {
         if (optionalCart.isPresent()) {
             Cart cart = optionalCart.get();
             List<CartItem> cartItems = cart.getItems();
-            System.out.println(cartItems.isEmpty());
             cartItems.clear();
-            System.out.println(cart.getItems().isEmpty());
             entityManager.detach(cart);
             cartRepository.save(cart);
 

@@ -55,15 +55,8 @@ public class CartController {
     public ResponseEntity<String> removeCartItem(
             @RequestParam Long cartId,
             @RequestParam Long itemId) {
-        Cart cart = cartService.getCartById(cartId);
-        if (cart == null) {
-            return ResponseEntity.notFound().build();
-        }
-        Optional<CartItem> cartItem = cartItemRepository.findById(itemId);
-        if (cartItem == null) {
-            return ResponseEntity.notFound().build();
-        }
-        cartService.removeCartItem(cart, cartItem.get());
+
+        cartService.removeCartItem(cartId, itemId);
         return ResponseEntity.ok("removed from Cart");
     }
 
