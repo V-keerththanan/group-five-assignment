@@ -2,7 +2,6 @@ package com.groupfive.assignment.controller;
 
 import com.groupfive.assignment.model.Cart;
 import com.groupfive.assignment.model.CartItem;
-import com.groupfive.assignment.model.Product;
 import com.groupfive.assignment.repository.CartItemRepository;
 import com.groupfive.assignment.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +45,9 @@ public class CartController {
         return ResponseEntity.ok(cartItems);
     }
 
-    @PostMapping("/add-item")
-    public ResponseEntity<String> addCartItem(@RequestParam Long cartId, @RequestBody Product product, @RequestParam int quantity) {
-        cartService.addCartItem(cartId, product, quantity);
+    @GetMapping ("/add-item")
+    public ResponseEntity<String> addCartItem(@RequestParam Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
+        cartService.addCartItem(cartId, productId, quantity);
         return ResponseEntity.ok("Item added to cart");
     }
 
@@ -69,10 +68,10 @@ public class CartController {
     }
 
     @DeleteMapping("/clear")
-    public ResponseEntity<?> clearCart(@RequestParam("cartId") Long cartId) {
+    public ResponseEntity<String> clearCart(@RequestParam("cartId") Long cartId) {
 
         cartService.clearCart(cartId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("cleared cart items");
     }
 
 }

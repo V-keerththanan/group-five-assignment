@@ -6,6 +6,7 @@ import com.groupfive.assignment.model.Product;
 import com.groupfive.assignment.model.User;
 import com.groupfive.assignment.repository.CartItemRepository;
 import com.groupfive.assignment.repository.CartRepository;
+import com.groupfive.assignment.repository.ProductRepository;
 import com.groupfive.assignment.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class CartService {
     private UserRepository userRepository;
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private ProductRepository productRepository;
 
     public Cart createCart(Integer user_id) {
         Optional<User> existingUser=userRepository.findById(user_id);
@@ -40,10 +43,12 @@ public class CartService {
         return cart.getItems();
     }
 
-    public String addCartItem(long cart_id, Product product, int quantity) {
+    public String addCartItem(long cart_id, Long product_id, int quantity) {
         Optional<Cart> existingCart = cartRepository.findById(cart_id);
-        if (existingCart.isPresent()) {
+        Optional<Product> existingProduct=productRepository.findById(product_id);
+        if (existingCart.isPresent() && existingProduct.isPresent()) {
             Cart cart = existingCart.get();
+            Product product=existingProduct.get();
             List<CartItem> cartItems = cart.getItems();
             for (CartItem item : cartItems) {
                 if (item.getProduct().getId().equals(product.getId())) {
