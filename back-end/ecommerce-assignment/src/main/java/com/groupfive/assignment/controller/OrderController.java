@@ -19,9 +19,9 @@ public class OrderController {
 
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteOrder(@RequestParam Long id) {
-        orderService.deleteOrderById(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> deleteOrder(@RequestParam Long orderId) {
+        orderService.deleteOrderById(orderId);
+        return ResponseEntity.ok("deleted..");
     }
 
     @GetMapping("/get-all")
@@ -31,8 +31,8 @@ public class OrderController {
     }
 
     @GetMapping("/get-all-by-user")
-    public ResponseEntity<List<Order>> getAllOrders(@RequestParam Integer id) {
-        List<Order> orders = orderService.getOrdersByUserId(id);
+    public ResponseEntity<List<Order>> getAllOrders(@RequestParam Integer userId) {
+        List<Order> orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.ok(orders);
     }
 
@@ -44,7 +44,7 @@ public class OrderController {
         orderService.updateOrderType(id,order.getStatus());
         return ResponseEntity.ok(order);
     }
-    @GetMapping("/t items")
+    @GetMapping("/items")
     public ResponseEntity<List<OrderItem>> getAllItemsInOrder(@RequestParam Long orderId) {
         List<OrderItem> items = orderService.getOrderItems(orderId);
         return ResponseEntity.ok(items);
