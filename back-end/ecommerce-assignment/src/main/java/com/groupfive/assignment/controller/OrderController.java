@@ -30,7 +30,7 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get-all-by-user")
     public ResponseEntity<List<Order>> getAllOrders(@RequestParam Integer id) {
         List<Order> orders = orderService.getOrdersByUserId(id);
         return ResponseEntity.ok(orders);
@@ -39,13 +39,13 @@ public class OrderController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
+    public ResponseEntity<Order> updateOrder(@RequestParam Long id, @RequestBody Order order) {
 
         orderService.updateOrderType(id,order.getStatus());
         return ResponseEntity.ok(order);
     }
-    @GetMapping("/items")
-    public ResponseEntity<List<OrderItem>> getAllOrderItems(@RequestParam Long orderId) {
+    @GetMapping("/t items")
+    public ResponseEntity<List<OrderItem>> getAllItemsInOrder(@RequestParam Long orderId) {
         List<OrderItem> items = orderService.getOrderItems(orderId);
         return ResponseEntity.ok(items);
     }
