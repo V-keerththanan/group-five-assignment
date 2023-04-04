@@ -7,9 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupfive.assignment.email.EmailVerification;
 import com.groupfive.assignment.model.User;
 import com.groupfive.assignment.service.UserService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,8 +25,10 @@ public class UserController {
 
 
    @GetMapping("user/all")
-    public ResponseEntity<List<User> > getAllUser(){
-       return  ResponseEntity.ok(userService.getAllUser());
+   @PreAuthorize("hasRole('ADMIN')")
+   public ResponseEntity<List<User>> getAllUser() {
+           return ResponseEntity.ok(userService.getAllUser());
+
    }
 
 
