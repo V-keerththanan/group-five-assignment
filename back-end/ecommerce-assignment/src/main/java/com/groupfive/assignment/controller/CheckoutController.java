@@ -16,7 +16,7 @@ public class CheckoutController {
     @Autowired
     private CheckoutService checkoutService;
     @PostMapping("/checkout")
-    public ResponseEntity<Void> processCheckout(@RequestBody CheckoutRequest checkoutRequest) {
+    public ResponseEntity<String> processCheckout(@RequestBody CheckoutRequest checkoutRequest) {
 
 
         checkoutService.processCheckout(checkoutRequest.getUserId(),
@@ -24,6 +24,6 @@ public class CheckoutController {
                 checkoutRequest.getHomeStreet(),checkoutRequest.getHomeCity(),
                 checkoutRequest.getHomeDistrict(),checkoutRequest.getHomePhoneNo());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Successfully proceed");
     }
 }
