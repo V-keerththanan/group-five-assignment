@@ -33,7 +33,7 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public User getUserFirstName(Integer user_id){
+    public User getUserDetailsById(Integer user_id){
 
         Optional<User> existUser=userRepo.findById(user_id);
         return existUser.get();

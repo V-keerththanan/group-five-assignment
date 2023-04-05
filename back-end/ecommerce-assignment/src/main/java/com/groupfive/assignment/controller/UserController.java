@@ -24,9 +24,10 @@ public class UserController {
     private UserService userService;
 
 
-   @GetMapping("user/all")
+   @GetMapping("/user/all")
    @PreAuthorize("hasRole('ADMIN')")
    public ResponseEntity<List<User>> getAllUser() {
+
            return ResponseEntity.ok(userService.getAllUser());
 
    }
@@ -34,6 +35,7 @@ public class UserController {
 
 
   @DeleteMapping("/user")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Void> deleteUser(@RequestParam Integer userId) {
       boolean deleted = userService.deleteUserById(userId);
       if (!deleted) {
