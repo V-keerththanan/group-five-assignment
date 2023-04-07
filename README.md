@@ -17,10 +17,16 @@ This is the backend for the Eplanet ecommerce website. It is built with Spring B
 ### API Endpoints
 The following endpoints are available in the backend:
 
-/auth/register - User registration
-/auth/sign-in - User login
-/product/** - CRUD operations for products
-/order/** -CRUD operations for orders
-/cart/**  - CRUD operations for cart
-/checkout - to make a checkout process
-/user/** - CRUD operations for user
+1. /auth/register - User registration
+2. /auth/sign-in - User login
+3. /product/** - CRUD operations for products
+4. /order/** -CRUD operations for orders
+5. /cart/**  - CRUD operations for cart
+6. /checkout - to make a checkout process
+7. /user/** - CRUD operations for user
+
+### Authentication
+The backend uses JWT for authentication. Upon successful login, a token is generated and sent to the client in the response header. This token must be included in all subsequent requests to protected endpoints.
+
+### Database Configuration
+The backend uses MySQL for persistent storage. The configuration for the database can be found in application.properties
