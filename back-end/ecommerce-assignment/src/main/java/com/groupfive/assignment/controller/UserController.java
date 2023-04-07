@@ -33,15 +33,6 @@ public class UserController {
 
    }
 
-  @DeleteMapping("/user/delete")
-  @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<Void> deleteUser(@RequestParam Integer userId) {
-      boolean deleted = userService.deleteUserById(userId);
-      if (!deleted) {
-          return ResponseEntity.notFound().build();
-      }
-      return ResponseEntity.noContent().build();
-  }
 
     @GetMapping("/user/get-details-by-id")
     public  ResponseEntity<User> getUserDetailsById(@RequestParam Integer userId) {

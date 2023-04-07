@@ -66,26 +66,7 @@ public class AuthenticationService {
     return "verify account...";
   }
 
-  public String registerAdmin(RegisterRequest request) {
-    boolean userExists = repository.existsByEmail(request.getEmail());
 
-    if(repository.existsByEmail(request.getEmail())) {
-      throw new UserAlreadyExistsException("User with this email already exists.");
-    }
-    String otp = emailVerification.generateOtp();
-    var user = User.builder()
-            .firstname(request.getFirstname())
-            .lastname(request.getLastname())
-            .email(request.getEmail())
-            .status(false)
-            .otp(otp)
-            .password(passwordEncoder.encode(request.getPassword()))
-            .role(Role.ADMIN)
-            .build();
-    var savedUser = repository.save(user);
-    emailVerification.sendOtpEmail(user.getEmail(), otp);
-   return "verify account..";
-  }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
     authenticationManager.authenticate(

@@ -26,19 +26,13 @@ public class AuthenticationController {
   @Autowired
   private EmailVerification mailService;
 
-  @PostMapping("/user-register")
+  @PostMapping("/register")
   public ResponseEntity<String> registerUser(
       @RequestBody RegisterRequest request
   ) {
     return ResponseEntity.ok(service.registerUser(request));
   }
 
-  @PostMapping("/admin-register")
-  public ResponseEntity<String> registerAdmin(
-          @RequestBody RegisterRequest request
-  ) {
-    return ResponseEntity.ok(service.registerAdmin(request));
-  }
 
 
   @PostMapping("/log-in")
@@ -48,7 +42,7 @@ public class AuthenticationController {
     return ResponseEntity.ok(service.authenticate(request));
   }
 
-  @GetMapping("/verify")
+  @PostMapping("/verify")
   public ResponseEntity<String> verifyOtp(@RequestParam(name = "email") String email, @RequestParam String otp) {
     if (mailService.verifyOtp(email, otp)) {
       return ResponseEntity.ok("OTP verified successfully");
