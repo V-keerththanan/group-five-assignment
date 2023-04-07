@@ -16,7 +16,7 @@ public class OrderCancel {
     @Autowired
     private OrderRepository orderRepository;
 
-    private void sendCancelEmail(Long orderId) {
+    public void sendCancelEmail(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         String subject = "Order Cancellation Confirmation";
         String body = "Dear " + order.getUser().getFirstname() + ",\n\nWe are sorry to inform you that your order with ID " + order.getId() + " has been cancelled.\n\nOrder Details:\n\n";

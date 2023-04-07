@@ -3,6 +3,7 @@ package com.groupfive.assignment.service;
 import com.groupfive.assignment._enum.OrderStatus;
 import com.groupfive.assignment.email.EmailConfirmation;
 import com.groupfive.assignment.email.EmailVerification;
+import com.groupfive.assignment.email.OrderCancel;
 import com.groupfive.assignment.error.CartNotFoundException;
 import com.groupfive.assignment.error.CartOrUserNotFound;
 import com.groupfive.assignment.error.OrderNotFoundException;
@@ -36,6 +37,8 @@ public class OrderService {
     private CartRepository cartRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrderCancel orderCancel;
     @Transactional
     public Order placeOrder(Integer userId, Long cartId,String homeNo,String homeStreet,String homeCity,String homeDistrict,String homePhoneNo) {
 
@@ -149,7 +152,7 @@ public class OrderService {
             order.setStatus(OrderStatus.CANCELLED);
             orderRepository.save(order);
 
-            sendCancelEmail(order);
+            orderCancel.sendCancelEmail(orderId);
         }
 
 
