@@ -41,7 +41,7 @@ public class AuthenticationController {
   }
 
 
-  @PostMapping("/authenticate")
+  @PostMapping("/log-in")
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationRequest request
   ) {
