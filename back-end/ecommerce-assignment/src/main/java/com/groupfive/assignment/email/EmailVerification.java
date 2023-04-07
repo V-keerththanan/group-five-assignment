@@ -33,8 +33,9 @@ public class EmailVerification {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(email);
         msg.setSubject("OTP for Verification");
-        msg.setText("Your OTP is: " + otp+"\n\nThanks for connecting us .....");
-
+        msg.setText("Thank you for connecting with us!\nPlease enter this OTP to complete your registration or verification process,  " +
+                "Your OTP is: " + otp+"\n\nBest regards,\n" +
+                "Eplannet");
         javaMailSender.send(msg);
     }
 
