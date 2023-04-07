@@ -128,5 +128,15 @@ public class OrderService {
 
     }
 
+    public double getTotalAmountByOrderId(Long orderId){
+        Optional<Order> savedOrder=orderRepository.findById(orderId);
+        if (savedOrder.isPresent()){
+            return savedOrder.get().getAmount();
+        }else{
+            throw new OrderNotFoundException("Order is not found !");
+        }
+
+    }
+
     }
 
