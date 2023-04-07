@@ -12,7 +12,11 @@ public class Product {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private String image_url;
+    private String image_url_1;
+    @Column(nullable = false)
+    private String image_url_2;
+    @Column(nullable = false)
+    private String image_url_3;
     @Column(nullable = false)
     private Double price;
     @Column(nullable = false)
@@ -64,19 +68,35 @@ public class Product {
         this.name = name;
     }
 
-    public String getImage_url() {
-        return image_url;
-    }
-
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
-
     public Double getPrice() {
         return price;
     }
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getImage_url_1() {
+        return image_url_1;
+    }
+
+    public void setImage_url_1(String image_url_1) {
+        this.image_url_1 = image_url_1;
+    }
+
+    public String getImage_url_2() {
+        return image_url_2;
+    }
+
+    public void setImage_url_2(String image_url_2) {
+        this.image_url_2 = image_url_2;
+    }
+
+    public String getImage_url_3() {
+        return image_url_3;
+    }
+
+    public void setImage_url_3(String image_url_3) {
+        this.image_url_3 = image_url_3;
     }
 }
