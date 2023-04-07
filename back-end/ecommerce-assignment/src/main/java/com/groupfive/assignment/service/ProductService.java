@@ -4,7 +4,8 @@ import com.groupfive.assignment._enum.ProductCategory;
 import com.groupfive.assignment.model.Product;
 import com.groupfive.assignment.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,6 +57,13 @@ public class ProductService {
        productRepo.save(savedProduct);
 
    }
+
+
+
+    public List<Product> getLatestProducts() {
+        Pageable pageable = PageRequest.of(0, 10);
+        return productRepo.findLatestProducts(pageable);
+    }
 
 
 
