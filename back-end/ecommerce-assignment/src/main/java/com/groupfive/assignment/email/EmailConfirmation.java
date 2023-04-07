@@ -3,6 +3,7 @@ package com.groupfive.assignment.email;
 import com.groupfive.assignment.model.Order;
 import com.groupfive.assignment.model.OrderItem;
 import com.groupfive.assignment.repository.OrderRepository;
+import com.groupfive.assignment.service.OrderService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +20,10 @@ public class EmailConfirmation {
     OrderRepository orderRepo;
     @Autowired
     private JavaMailSender javaMailSender;
+    @Autowired
+    private OrderService orderService;
+
+
     public void sendConfirmationEmail(Long order_id,String email){
         Optional<Order> existingOrder=orderRepo.findById(order_id);
         if(!existingOrder.isPresent()){
@@ -41,6 +46,9 @@ public class EmailConfirmation {
                     + "</tr>"
                     + getProductDetailsTable(order_id)
                     + "</table>"
+                    +"<h3>Total amount is :-  <h3>"
+                    +"<p>" + orderService.getTotalAmountByOrderId(order_id) + "</p>"
+                    +"<h2>Thank You......<h2>"
                     + "</body></html>",true);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
@@ -73,5 +81,6 @@ public class EmailConfirmation {
 
         return sb.toString();
     }
+
 
 }
