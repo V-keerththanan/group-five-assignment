@@ -4,9 +4,11 @@ import com.groupfive.assignment._enum.ProductCategory;
 import com.groupfive.assignment.model.Product;
 import com.groupfive.assignment.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -43,7 +45,17 @@ public class ProductService {
         return productRepo.findByCategory(category);
     }
 
+   public void updateProduct(Long id,Boolean available){
+       Optional<Product> product = productRepo.findById(id);
 
+       if (!product.isPresent()) {
+           throw new RuntimeException("Product not found with this id");
+       }
+       Product savedProduct=product.get();
+       savedProduct.setAvailable(available);
+       productRepo.save(savedProduct);
+
+   }
 
 
 

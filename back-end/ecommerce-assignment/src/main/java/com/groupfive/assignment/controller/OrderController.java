@@ -6,6 +6,7 @@ import com.groupfive.assignment.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,12 +20,14 @@ public class OrderController {
 
 
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteOrder(@RequestParam Long orderId) {
         orderService.deleteOrderById(orderId);
         return ResponseEntity.ok("deleted..");
     }
 
     @GetMapping("/get-all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Order>> getAllOrders() {
         List<Order> orders = orderService.getOrders();
         return ResponseEntity.ok(orders);

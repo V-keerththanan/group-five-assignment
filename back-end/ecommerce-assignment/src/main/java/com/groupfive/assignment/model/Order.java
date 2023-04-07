@@ -1,6 +1,7 @@
 package com.groupfive.assignment.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.groupfive.assignment._enum.OrderStatus;
 import com.groupfive.assignment._enum.PaymentMethod;
 import jakarta.persistence.*;
