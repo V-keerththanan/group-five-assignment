@@ -138,5 +138,21 @@ public class OrderService {
 
     }
 
-    }
+
+        public void cancelOrder(Long orderId) {
+            Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
+
+            if (order.getStatus() == OrderStatus.CANCELLED) {
+                throw new RuntimeException("Order is already cancelled");
+            }
+
+            order.setStatus(OrderStatus.CANCELLED);
+            orderRepository.save(order);
+
+            sendCancelEmail(order);
+        }
+
+
+
+}
 
