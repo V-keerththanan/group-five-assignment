@@ -20,8 +20,6 @@ public class EmailConfirmation {
     OrderRepository orderRepo;
     @Autowired
     private JavaMailSender javaMailSender;
-    @Autowired
-    private OrderService orderService;
 
 
     public void sendConfirmationEmail(Long order_id,String email){
@@ -47,6 +45,7 @@ public class EmailConfirmation {
                     + getProductDetailsTable(order_id)
                     + "</table>"
                     +"<h3>Total amount is :-  <h3>"
+                    +"<p>"+existingOrder.get().getAmount()+"</p>"
                     +"<h2>Thank You......<h2>"
                     + "</body></html>",true);
         } catch (MessagingException e) {
