@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -32,9 +33,7 @@ public class UserController {
 
    }
 
-
-
-  @DeleteMapping("/user")
+  @DeleteMapping("/user/delete")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Void> deleteUser(@RequestParam Integer userId) {
       boolean deleted = userService.deleteUserById(userId);
@@ -44,6 +43,10 @@ public class UserController {
       return ResponseEntity.noContent().build();
   }
 
-
+    @GetMapping("/user/get-details-by-id")
+    public  ResponseEntity<User> getUserDetailsById(@RequestParam Integer userId) {
+       User u=userService.getUserDetailsById(userId);
+        return ResponseEntity.ok(u);
+    }
 
 }
