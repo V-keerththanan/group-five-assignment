@@ -64,6 +64,7 @@ public class ProductController {
     }
 
     @PutMapping("/availability")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateProductAvailability(@RequestParam Long productId, @RequestParam Boolean available) {
          productService.updateProduct(productId,available);
 
