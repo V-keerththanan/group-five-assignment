@@ -152,7 +152,7 @@ public class OrderService {
             order.setStatus(OrderStatus.CANCELLED);
             orderRepository.save(order);
 
-            //orderCancel.sendCancelEmail(orderId);
+            orderCancel.sendCancelEmail(orderId);
         }
 
 

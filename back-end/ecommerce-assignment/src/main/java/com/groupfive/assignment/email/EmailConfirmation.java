@@ -47,7 +47,6 @@ public class EmailConfirmation {
                     + getProductDetailsTable(order_id)
                     + "</table>"
                     +"<h3>Total amount is :-  <h3>"
-                    +"<p>" + orderService.getTotalAmountByOrderId(order_id) + "</p>"
                     +"<h2>Thank You......<h2>"
                     + "</body></html>",true);
         } catch (MessagingException e) {
