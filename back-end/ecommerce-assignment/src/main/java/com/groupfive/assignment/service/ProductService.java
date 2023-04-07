@@ -59,7 +59,6 @@ public class ProductService {
    }
 
 
-
     public List<Product> getLatestProducts() {
         Pageable pageable = PageRequest.of(0, 10);
         return productRepo.findLatestProducts(pageable);

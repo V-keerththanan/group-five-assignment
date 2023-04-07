@@ -70,4 +70,10 @@ public class ProductController {
 
         return ResponseEntity.ok("Product availability updated successfully.");
     }
+
+    @GetMapping("/getNewArrival")
+    public ResponseEntity<List<Product>> getLatestProduct() {
+        List<Product> productList = productService.getLatestProducts();
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
 }
