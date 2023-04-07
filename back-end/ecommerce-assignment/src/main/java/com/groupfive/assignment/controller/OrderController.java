@@ -42,6 +42,7 @@ public class OrderController {
 
 
     @PutMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Order> updateOrder(@RequestParam Long id, @RequestBody Order order) {
 
         orderService.updateOrderType(id,order.getStatus());
@@ -51,6 +52,13 @@ public class OrderController {
     public ResponseEntity<List<OrderItem>> getAllItemsInOrder(@RequestParam Long orderId) {
         List<OrderItem> items = orderService.getOrderItems(orderId);
         return ResponseEntity.ok(items);
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity<String> cancelOrder(@RequestParam Long orderId) {
+
+        orderService.cancelOrder(orderId);
+        return ResponseEntity.ok("Order has been cancelled successfully");
     }
 
 
