@@ -44,7 +44,7 @@ public class CartController {
         return ResponseEntity.ok(cartItems);
     }
 
-    @GetMapping ("/cart/add-item")
+    @PostMapping ("/cart/add-item")
     public ResponseEntity<String> addCartItem(@RequestParam Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
         cartService.addCartItem(cartId, productId, quantity);
         return ResponseEntity.ok("Item added to cart");

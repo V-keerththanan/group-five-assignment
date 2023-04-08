@@ -33,7 +33,6 @@ public class ProductController {
     }
 
     @PostMapping("/admin/product/add")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         productService.saveProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
@@ -41,7 +40,6 @@ public class ProductController {
 
 
     @DeleteMapping("/admin/product/delete")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@RequestParam Long productId) {
         boolean deleted = productService.deleteProductById(productId);
         if (!deleted) {
@@ -63,7 +61,6 @@ public class ProductController {
     }
 
     @PutMapping("/admin/product/availability")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateProductAvailability(@RequestParam Long productId, @RequestParam Boolean available) {
          productService.updateProduct(productId,available);
 
