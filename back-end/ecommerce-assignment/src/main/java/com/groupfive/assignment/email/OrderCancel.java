@@ -21,22 +21,27 @@ public class OrderCancel {
     public void sendCancelEmail(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         String subject = "Order Cancellation Confirmation";
-        String body = "Dear " + order.getUser().getFirstname() + ",\n\nWe are sorry to inform you that your order with ID " + order.getId() + " has been cancelled.\n\nOrder Details:\n\n";
+        String greeting = "Dear " + order.getUser().getFirstname() + ",";
+        String body = "<html><body><p>We are sorry to inform you that your order with ID <b>" + order.getId() + "</b> has been cancelled.</p>";
+        body += "<p>Here are the details of your cancelled order:</p><ul>";
         for (OrderItem item : order.getOrderItems()) {
-            body += item.getProduct().getName() + " - " + item.getQuantity() + " - " + item.getPrice() + "\n";
+            body += "<li>" + item.getProduct().getName() + " - " + item.getQuantity() + " - Rs " + item.getPrice() + "</li>";
         }
-        body += "\nTotal Amount: " + order.getAmount() + "\n\nIf you have any questions or concerns, please feel free to contact us.\n\nBest regards,\nYour Order Team";
+        body += "</ul><p>Total Amount: <b>Rs " + order.getAmount() + "</b></p>";
+        body += "<p>If you have any questions or concerns, please feel free to contact us.</p>";
+        body += "<p>Best regards,<br>Your Order Team</p></body></html>";
 
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(order.getUser().getEmail());
             helper.setSubject(subject);
-            helper.setText(body);
+            helper.setText(greeting + "<br><br>" + body, true);
             javaMailSender.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
     }
+
 
 }

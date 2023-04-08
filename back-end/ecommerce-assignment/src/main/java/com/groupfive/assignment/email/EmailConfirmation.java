@@ -44,8 +44,7 @@ public class EmailConfirmation {
                     + "</tr>"
                     + getProductDetailsTable(order_id)
                     + "</table>"
-                    +"<h3>Total amount is :-  <h3>"
-                    +"<p>"+existingOrder.get().getAmount()+"</p>"
+                    +"<p>Total amount is:- Rs "+existingOrder.get().getAmount()+"</p>"
                     +"<h2>Thank You......<h2>"
                     + "</body></html>",true);
         } catch (MessagingException e) {
@@ -71,7 +70,7 @@ public class EmailConfirmation {
         for (OrderItem item : order.getOrderItems()) {
             sb.append("<tr>")
                     .append("<td>").append(item.getProduct().getName()).append("</td>")
-                    .append("<td>").append("Rs").append(item.getProduct().getPrice()).append("</td>")
+                    .append("<td>").append("Rs ").append(item.getProduct().getPrice()).append("</td>")
                     .append("<td>").append(item.getQuantity()).append("</td>")
                     .append("<td>").append(item.getPrice()).append("</td>")
                     .append("</tr>");
