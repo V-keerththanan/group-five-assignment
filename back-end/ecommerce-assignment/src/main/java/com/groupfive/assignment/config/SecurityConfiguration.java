@@ -1,5 +1,6 @@
 package com.groupfive.assignment.config;
 
+import com.groupfive.assignment._enum.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,9 @@ public class SecurityConfiguration {
         .authorizeHttpRequests()
             .requestMatchers("/auth/**")
             .permitAll()
+            .requestMatchers("/product/**").
+            permitAll()
+            .requestMatchers("/admin/**").hasAuthority(String.valueOf(Role.ADMIN))
             .anyRequest()
             .authenticated()
         .and()

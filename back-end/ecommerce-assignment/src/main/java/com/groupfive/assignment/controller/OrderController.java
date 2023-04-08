@@ -12,28 +12,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
 
-    @DeleteMapping("/delete")
-    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/admin/order/delete")
     public ResponseEntity<String> deleteOrder(@RequestParam Long orderId) {
         orderService.deleteOrderById(orderId);
         return ResponseEntity.ok("deleted..");
     }
 
-    @GetMapping("/get-all")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/order/get-all")
     public ResponseEntity<List<Order>> getAllOrders() {
         List<Order> orders = orderService.getOrders();
         return ResponseEntity.ok(orders);
     }
 
-    @GetMapping("/get-all-by-user")
+    @GetMapping("/order/get-all-by-user")
     public ResponseEntity<List<Order>> getAllOrders(@RequestParam Integer userId) {
         List<Order> orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.ok(orders);
@@ -41,20 +38,19 @@ public class OrderController {
 
 
 
-    @PutMapping("/update")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/admin/order/update")
     public ResponseEntity<Order> updateOrder(@RequestParam Long id, @RequestBody Order order) {
 
         orderService.updateOrderType(id,order.getStatus());
         return ResponseEntity.ok(order);
     }
-    @GetMapping("/items")
+    @GetMapping("/order/items")
     public ResponseEntity<List<OrderItem>> getAllItemsInOrder(@RequestParam Long orderId) {
         List<OrderItem> items = orderService.getOrderItems(orderId);
         return ResponseEntity.ok(items);
     }
 
-    @PostMapping ("/cancel")
+    @PostMapping ("/order/cancel")
     public ResponseEntity<String> cancelOrder(@RequestParam Long orderId) {
 
         orderService.cancelOrder(orderId);

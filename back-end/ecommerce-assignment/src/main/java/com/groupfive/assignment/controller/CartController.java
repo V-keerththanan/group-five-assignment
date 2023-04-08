@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/cart")
 public class CartController {
 
     @Autowired
@@ -20,13 +19,13 @@ public class CartController {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    @PostMapping("/create")
+    @PostMapping("/cart/create")
     public ResponseEntity<?> createCart(@PathVariable Integer user_id) {
         Cart cart = cartService.createCart(user_id);
         return ResponseEntity.ok(cart);
     }
 
-    @GetMapping
+    @GetMapping("/cart/get")
     public ResponseEntity<?> getCartById(@RequestParam Long cartId) {
         Cart cart = cartService.getCartById(cartId);
         if (cart == null) {
@@ -35,7 +34,7 @@ public class CartController {
         return ResponseEntity.ok(cart);
     }
 
-    @GetMapping("/items")
+    @GetMapping("/cart/items")
     public ResponseEntity<?> getCartItems(@RequestParam  Long cartId) {
         Cart cart = cartService.getCartById(cartId);
         if (cart == null) {
@@ -45,13 +44,13 @@ public class CartController {
         return ResponseEntity.ok(cartItems);
     }
 
-    @GetMapping ("/add-item")
+    @GetMapping ("/cart/add-item")
     public ResponseEntity<String> addCartItem(@RequestParam Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
         cartService.addCartItem(cartId, productId, quantity);
         return ResponseEntity.ok("Item added to cart");
     }
 
-    @DeleteMapping("/items/delete")
+    @DeleteMapping("/cart/items/delete")
     public ResponseEntity<String> removeCartItem(
             @RequestParam Long cartId,
             @RequestParam Long itemId) {
@@ -60,7 +59,7 @@ public class CartController {
         return ResponseEntity.ok("removed from Cart");
     }
 
-    @DeleteMapping("/clear")
+    @DeleteMapping("/cart/clear")
     public ResponseEntity<String> clearCart(@RequestParam("cartId") Long cartId) {
 
         cartService.clearCart(cartId);

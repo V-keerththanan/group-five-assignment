@@ -12,19 +12,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/get-all")
+    @GetMapping("/product/get-all")
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/product/get")
     public ResponseEntity<Product> getProductById(@RequestParam Long productId) {
         Product product = productService.getProductById(productId);
         if (product == null) {
@@ -33,7 +32,7 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/admin/product/add")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         productService.saveProduct(product);
@@ -41,7 +40,7 @@ public class ProductController {
     }
 
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/admin/product/delete")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@RequestParam Long productId) {
         boolean deleted = productService.deleteProductById(productId);
@@ -63,7 +62,7 @@ public class ProductController {
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
-    @PutMapping("/availability")
+    @PutMapping("/admin/product/availability")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateProductAvailability(@RequestParam Long productId, @RequestParam Boolean available) {
          productService.updateProduct(productId,available);
